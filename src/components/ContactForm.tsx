@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, User, Phone, ListFilter, Send } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 const serviceOptions = [
   'Resume Designing',
@@ -16,134 +16,84 @@ const ContactForm = () => {
     email: '',
     serviceType: serviceOptions[0]
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    // Validate form
-    if (!formData.name || !formData.email || !formData.phone || !formData.serviceType) {
-      alert('Please fill in all fields');
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      alert('Please enter a valid email address');
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Phone validation - allows various formats
-    const phoneRegex = /^[\d\s()+.-]{10,}$/;
-    if (!phoneRegex.test(formData.phone)) {
-      alert('Please enter a valid phone number');
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Create mailto link with form data
     const mailtoLink = `mailto:shibi73201@gmail.com?subject=Service Inquiry: ${formData.serviceType}&body=Name: ${formData.name}%0D%0APhone: ${formData.phone}%0D%0AEmail: ${formData.email}%0D%0AService: ${formData.serviceType}`;
     window.location.href = mailtoLink;
-    
-    setIsSubmitting(false);
   };
 
-  const InputWrapper = ({ children, label }: { children: React.ReactNode; label: string }) => (
-    <div className="relative">
-      <label className="absolute -top-2 left-2 bg-white px-2 text-xs font-medium text-gray-600">
-        {label}
-      </label>
-      {children}
-    </div>
-  );
-
   return (
-    <div className="max-w-lg mx-auto">
-      <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-        <div className="p-8">
-          <div className="flex items-center justify-center mb-8">
-            <div className="bg-indigo-100 p-3 rounded-full">
-              <Mail className="h-8 w-8 text-indigo-600" />
-            </div>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <InputWrapper label="Full Name">
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 focus-within:border-indigo-500 transition-colors">
-                <User className="h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  required
-                  className="ml-3 flex-1 outline-none text-gray-800 placeholder-gray-400"
-                  placeholder="John Doe"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                />
-              </div>
-            </InputWrapper>
-
-            <InputWrapper label="Phone Number">
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 focus-within:border-indigo-500 transition-colors">
-                <Phone className="h-5 w-5 text-gray-400" />
-                <input
-                  type="tel"
-                  required
-                  className="ml-3 flex-1 outline-none text-gray-800 placeholder-gray-400"
-                  placeholder="+1 (555) 000-0000"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                />
-              </div>
-            </InputWrapper>
-
-            <InputWrapper label="Email Address">
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 focus-within:border-indigo-500 transition-colors">
-                <Mail className="h-5 w-5 text-gray-400" />
-                <input
-                  type="email"
-                  required
-                  className="ml-3 flex-1 outline-none text-gray-800 placeholder-gray-400"
-                  placeholder="john@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
-              </div>
-            </InputWrapper>
-
-            <InputWrapper label="Service Type">
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 focus-within:border-indigo-500 transition-colors">
-                <ListFilter className="h-5 w-5 text-gray-400" />
-                <select
-                  className="ml-3 flex-1 outline-none text-gray-800 bg-transparent"
-                  value={formData.serviceType}
-                  onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
-                >
-                  {serviceOptions.map((service) => (
-                    <option key={service} value={service}>
-                      {service}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </InputWrapper>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 py-4 px-6 bg-indigo-600 text-white rounded-lg font-medium 
-                hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
-                transform transition-all duration-200 hover:scale-[1.02]
-                disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Send className="h-5 w-5" />
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </form>
+    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="px-6 py-8">
+        <div className="flex items-center mb-6">
+          <Mail className="h-6 w-6 text-indigo-600" />
+          <h3 className="ml-3 text-2xl font-bold text-gray-900">Contact Form</h3>
         </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+          </div>
+          <div>
+            <label htmlFor="serviceType" className="block text-sm font-medium text-gray-700">
+              Service Type
+            </label>
+            <select
+              id="serviceType"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              value={formData.serviceType}
+              onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
+            >
+              {serviceOptions.map((service) => (
+                <option key={service} value={service}>
+                  {service}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );
